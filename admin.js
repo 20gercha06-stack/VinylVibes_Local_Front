@@ -6,7 +6,7 @@
 //    vv_compras_<nombre>  → compras por usuario
 // ══════════════════════════════════════════════════════════
 
-const API = 'https://vinylvibes-local-back.onrender.com/';
+const API = 'https://vinylvibes-local-back.onrender.com';
 
 function authHeaders() {
     return {
