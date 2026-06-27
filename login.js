@@ -15,7 +15,7 @@
 //    3. Guardar el JWT devuelto en localStorage.
 // ══════════════════════════════════════════════════════════
 
-const API = 'https://vinylvibes-local-back.onrender.com/';
+const API = 'https://vinylvibes-local-back.onrender.com';
 
 // ── Helpers de almacenamiento local ──────────────────────
 
