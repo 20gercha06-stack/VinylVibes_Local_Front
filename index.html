@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VinylVibes — Premium Vinyl Store</title>
+<link rel="icon" type="image/png" href="record.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══════════════════════════════════════ -->
+  <header class="site-header" id="site-header">
+    <div class="header-content">
+
+      <a href="index.html" class="logo-link" aria-label="VinylVibes — Inicio">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="20" cy="20" r="19" stroke="url(#g1)" stroke-width="1.5"/>
+              <circle cx="20" cy="20" r="12" stroke="url(#g1)" stroke-width="1" stroke-dasharray="3 2"/>
+              <circle cx="20" cy="20" r="4" fill="url(#g1)"/>
+              <circle cx="20" cy="20" r="2" fill="#09090b"/>
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="40" y2="40">
+                  <stop offset="0%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#ff6b6b"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h1>VinylVibes</h1>
+        </div>
+      </a>
+
+      <nav class="header-nav" aria-label="Navegación principal">
+        <a href="#" class="nav-link nav-link--active">Catálogo</a>
+        <a href="#section-generos" class="nav-link" onclick="scrollToGeneros(event)">Generos</a>
+        <a href="#section-novedades" class="nav-link" onclick="scrollToNovedades(event)">Historias</a>
+      </nav>
+
+      <div id="auth-section" class="auth-section">
+        <button class="cart-btn btn-sm" onclick="toggleCarrito()" aria-label="Abrir carrito">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Carrito
+          <span class="cart-badge" id="carrito-count">0</span>
+        </button>
+        <button class="btn-ghost btn-sm" onclick="window.location.href='login.html'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Entrar
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══ HERO ══════════════════════════════════════════ -->
+  <section class="hero-strip" aria-label="Presentación">
+    <div class="hero-strip__inner">
+      <span class="hero-eyebrow">Colección 2025</span>
+      <h2 class="hero-title">Música que<br><em>se siente</em></h2>
+      <p class="hero-sub">Los mejores vinilos nuevos y de colección, curados para verdaderos audiophiles.</p>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="vinyl-spin">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="heroGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#b45309"/>
+            </radialGradient>
+          </defs>
+          <circle cx="100" cy="100" r="99" fill="#141418" stroke="#2a2a35" stroke-width="1"/>
+          <circle cx="100" cy="100" r="90" fill="none" stroke="#1e1e28" stroke-width="0.6"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#1a1a23" stroke-width="0.6"/>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="#1c1c25" stroke-width="0.6"/>
+          <circle cx="100" cy="100" r="60" fill="none" stroke="#1e1e27" stroke-width="0.6"/>
+          <circle cx="100" cy="100" r="50" fill="none" stroke="#1a1a24" stroke-width="0.6"/>
+          <circle cx="100" cy="100" r="38" fill="#1c1c27" stroke="#28283a" stroke-width="0.5"/>
+          <circle cx="100" cy="100" r="22" fill="url(#heroGrad)"/>
+          <circle cx="100" cy="100" r="8" fill="#09090b"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CARRUSEL NOVEDADES ═══════════════════════════ -->
+  <section class="carrusel-section" aria-label="Discos añadidos recientemente">
+    <div class="carrusel-header">
+      <div class="carrusel-title">
+        <h2>Recién Añadidos</h2>
+        <span class="carrusel-eyebrow">Nuevos</span>
+      </div>
+      <div class="carrusel-nav">
+        <button class="carrusel-btn" id="carrusel-prev" aria-label="Anterior" onclick="moverCarrusel(-1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carrusel-btn" id="carrusel-next" aria-label="Siguiente" onclick="moverCarrusel(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="carrusel-viewport">
+      <div class="carrusel-track" id="carrusel-track"></div>
+    </div>
+  </section>
+
+  <!-- ═══ TOOLBAR ═══════════════════════════════════════ -->
+  <div class="toolbar" role="search">
+    <div class="search-container">
+      <svg class="search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="input-busqueda" placeholder="Buscar artista o álbum…" autocomplete="off" aria-label="Buscar en el catálogo">
+    </div>
+    <div class="toolbar-meta" aria-live="polite">
+      <span class="catalog-label">Catálogo</span>
+      <span class="catalog-count" id="catalog-count">— discos</span>
+    </div>
+  </div>
+
+  <!-- ═══ CATALOG GRID ═══════════════════════════════════ -->
+  <main class="main-container">
+    <section id="contenedor-discos" class="grid-discos" aria-label="Catálogo de vinilos" aria-live="polite">
+      <div class="disco-card disco-card--skeleton" aria-hidden="true"></div>
+      <div class="disco-card disco-card--skeleton" aria-hidden="true"></div>
+      <div class="disco-card disco-card--skeleton" aria-hidden="true"></div>
+      <div class="disco-card disco-card--skeleton" aria-hidden="true"></div>
+      <div class="disco-card disco-card--skeleton" aria-hidden="true"></div>
+      <div class="disco-card disco-card--skeleton" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <!-- ═══ SECCIÓN GÉNEROS ════════════════════════════════ -->
+  <section id="section-generos" aria-label="Géneros musicales">
+    <div class="generos-header">
+      <div>
+        <span class="generos-eyebrow">Explorar</span>
+        <h2 class="generos-titulo">Géneros <em>musicales</em></h2>
+        <p class="generos-sub">Filtra el catálogo por estilo.</p>
+      </div>
+    </div>
+    <div class="generos-filtros" id="generos-filtros"></div>
+    <div id="generos-grid" class="generos-grid"></div>
+    <div id="generos-paginacion" style="display:flex;justify-content:center;align-items:center;gap:12px;padding:20px 0;"></div>
+  </section>
+
+  <!-- ═══ SECCIÓN NOVEDADES & STORYTELLING ════════════════ -->
+  <section id="section-novedades" aria-label="Novedades y curiosidades">
+    <div class="novedades-header">
+      <div class="novedades-header__text">
+        <span class="novedades-eyebrow">Editorial</span>
+        <h2 class="novedades-titulo">Novedades <em>&amp; Historias</em></h2>
+        <p class="novedades-sub">Cada vinilo tiene una historia. Descúbrela.</p>
+      </div>
+      <div class="novedades-header__deco" aria-hidden="true">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="39" fill="none" stroke="url(#novGrad)" stroke-width="1.2"/>
+          <circle cx="40" cy="40" r="28" fill="none" stroke="url(#novGrad)" stroke-width="0.6" stroke-dasharray="4 3"/>
+          <circle cx="40" cy="40" r="14" fill="url(#novGrad)" opacity="0.18"/>
+          <circle cx="40" cy="40" r="5"  fill="url(#novGrad)"/>
+          <defs>
+            <linearGradient id="novGrad" x1="0" y1="0" x2="80" y2="80">
+              <stop offset="0%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#ff6b6b"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Grid de discos — renderizado por JS con abrirModalStorytelling -->
+    <!-- Buscador de novedades -->
+    <div style="display:flex;justify-content:center;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:8px;background:var(--bg-raised);border:1px solid var(--border-dim);border-radius:var(--r-md);padding:8px 16px;width:100%;max-width:420px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="novedades-search" placeholder="Buscar en Novedades & Historias..." oninput="buscarEnNovedades(this.value)" style="background:none;border:none;outline:none;color:var(--text-primary);font-size:0.875rem;width:100%;">
+      </div>
+    </div>
+    <div id="novedades-grid" class="novedades-grid" aria-live="polite">
+      <!-- Cards insertadas por renderizarNovedades() -->
+    </div>
+    <div id="novedades-paginacion" style="display:flex;justify-content:center;align-items:center;gap:12px;padding:20px 0;"></div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-logo">VinylVibes</span>
+      <p class="footer-copy">© 2025 VinylVibes — Hecho con pasión por la música.</p>
+<p class="footer-copy" style="font-size:0.75rem; margin-top:4px;">
+  <a href="https://www.flaticon.com/free-icons/vinyl" title="vinyl icons" style="color:var(--text-muted);">
+    Vinyl icons created by Smashicons - Flaticon
+  </a>
+</p>
+    </div>
+  </footer>
+
+    <!-- ═══ MODAL DETALLE ════════════════════════════════ -->
+  <div id="modal-detalle" role="dialog" aria-modal="true" aria-labelledby="detalle-titulo">
+    <div class="modal-detalle__content">
+
+      <!-- COLUMNA IZQUIERDA: portada grande + video -->
+      <div class="modal-detalle__cover">
+        <img id="detalle-imagen" src="" alt="">
+        <div class="modal-detalle__cover-overlay"></div>
+        <button class="modal-detalle__close" onclick="cerrarModalDetalle()" aria-label="Cerrar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
+        <!-- Contenedor del video de YouTube — siempre visible -->
+        <div class="modal-detalle__video" id="detalle-video-container">
+
+          <div class="modal-detalle__video-label">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span id="detalle-video-label-txt">Escucha el álbum</span>
+          </div>
+
+          <!-- Estado: sin video -->
+          <div class="video-placeholder" id="detalle-video-placeholder" style="display:none;">
+          </div>
+
+          <!-- Estado: con video — iframe de YouTube -->
+          <div class="modal-detalle__video-wrapper" id="detalle-video-wrapper" style="display:none;">
+            <iframe
+              id="detalle-video-iframe"
+              src=""
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: info + storytelling + acciones -->
+      <div class="modal-detalle__body">
+        <span class="modal-detalle__tag">Álbum de Vinilo · 12"</span>
+        <h2 class="modal-detalle__titulo" id="detalle-titulo">—</h2>
+        <p class="modal-detalle__artista" id="detalle-artista">—</p>
+        <!-- Género del disco -->
+        <div style="text-align:center; margin-bottom:18px;">
+          <span class="modal-detalle__genero" id="detalle-genero" style="display:none; margin-bottom:0;"></span>
+        </div>
+
+        <!-- Historia / descripción del disco -->
+        <div class="modal-detalle__story" id="detalle-story-container" style="display:none;">
+          <blockquote id="detalle-story-texto"></blockquote>
+
+        </div>
+
+        <div class="modal-detalle__meta" id="detalle-meta-bloque">
+          <div class="meta-item">
+            <span class="meta-item__label">Precio</span>
+            <span class="meta-item__value meta-item__value--price" id="detalle-precio">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-item__label">Formato</span>
+            <span class="meta-item__value">Vinilo 12"</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-item__label">Disponibilidad</span>
+            <span class="meta-item__value" id="detalle-estado">—</span>
+          </div>
+        </div>
+
+        <!-- También te recomendamos (3 discos, generado por JS) -->
+        <div class="modal-detalle__recomendados" id="detalle-recomendados">
+          <span class="recomendados__label">También te recomendamos</span>
+          <div class="recomendados__lista" id="recomendados-lista">
+            <!-- Cards insertadas por renderizarRecomendados() -->
+          </div>
+        </div>
+
+        <div class="modal-detalle__acciones" id="detalle-acciones-bloque">
+          <button class="btn-carrito" id="detalle-btn-carrito" onclick="agregarAlCarritoDesdeModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            Al Carrito
+          </button>
+          <button id="detalle-btn-comprar" onclick="comprarDesdeModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Comprar Ahora
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ CART OVERLAY + PANEL ══════════════════════════ -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCarrito()"></div>
+
+  <aside class="cart-panel" id="cart-panel" aria-label="Carrito de compras">
+    <div class="cart-panel__header">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Mi Carrito
+      </h3>
+      <button class="cart-close" onclick="toggleCarrito()" aria-label="Cerrar carrito">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="cart-panel__items" id="carrito-items">
+      <div class="cart-empty-msg">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin:0 auto 10px; opacity:0.3;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <p>Tu carrito está vacío.</p>
+        <p style="margin-top:4px; font-size:0.78rem; color: var(--text-muted);">Agrega vinilos para empezar.</p>
+      </div>
+    </div>
+
+    <div class="cart-panel__footer">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-amount" id="carrito-total">$0.00</span>
+      </div>
+      <button class="cart-checkout-btn" onclick="abrirCheckoutDesdeCarrito()">
+        Proceder al Pago →
+      </button>
+      <button class="cart-clear-btn" onclick="vaciarCarrito()">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <!-- ═══ MODAL ENVÍO ═══════════════════════════════════ -->
+  <div id="modal-envio" role="dialog" aria-modal="true" aria-labelledby="envio-titulo">
+    <div class="modal-envio__backdrop" onclick="cerrarModalEnvio()"></div>
+    <div class="modal-envio__content">
+      <div class="modal-envio__header">
+        <div class="modal-envio__header-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12H3l9-9 9 9h-2"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/></svg>
+        </div>
+        <div>
+          <h3 id="envio-titulo">Datos de Envío</h3>
+          <p class="modal-envio__subtitle" id="envio-subtitulo">—</p>
+        </div>
+        <button class="modal-envio__close" onclick="cerrarModalEnvio()" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="form-envio" class="modal-envio__form" novalidate autocomplete="off">
+        <div class="modal-envio__fields">
+          <div class="input-group">
+            <label for="envio-nombre">Nombre del receptor <span class="label-tag">requerido</span></label>
+            <input type="text" id="envio-nombre" placeholder="Nombre completo de quien recibe" maxlength="120" autocomplete="name">
+          </div>
+          <div class="modal-envio__row modal-envio__row--3">
+            <div class="input-group" style="grid-column: 1 / span 2;">
+              <label for="envio-calle">Calle <span class="label-tag">requerido</span></label>
+              <input type="text" id="envio-calle" placeholder="Nombre de la calle" maxlength="200" autocomplete="street-address">
+            </div>
+            <div class="input-group">
+              <label for="envio-num-ext">Núm. Ext. <span class="label-tag">requerido</span></label>
+              <input type="text" id="envio-num-ext" placeholder="Ej: 42" maxlength="20">
+            </div>
+            <div class="input-group">
+              <label for="envio-num-int">Núm. Int. <span class="label-tag">opcional</span></label>
+              <input type="text" id="envio-num-int" placeholder="Ej: 3B" maxlength="20">
+            </div>
+          </div>
+          <div class="modal-envio__row">
+            <div class="input-group">
+              <label for="envio-colonia">Colonia <span class="label-tag">requerido</span></label>
+              <input type="text" id="envio-colonia" placeholder="Nombre de la colonia" maxlength="100">
+            </div>
+            <div class="input-group">
+              <label for="envio-cp">Código Postal <span class="label-tag">requerido</span></label>
+              <input type="text" id="envio-cp" placeholder="Ej: 06600" maxlength="10" inputmode="numeric">
+            </div>
+          </div>
+          <div class="modal-envio__row">
+            <div class="input-group">
+              <label for="envio-ciudad">Ciudad <span class="label-tag">requerido</span></label>
+              <input type="text" id="envio-ciudad" placeholder="Ej: Ciudad de México" maxlength="100" autocomplete="address-level2">
+            </div>
+            <div class="input-group">
+              <label for="envio-estado">Estado <span class="label-tag">requerido</span></label>
+              <input type="text" id="envio-estado" placeholder="Ej: CDMX" maxlength="100" autocomplete="address-level1">
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="envio-referencias">Referencias <span class="label-tag">opcional</span></label>
+            <textarea id="envio-referencias" rows="2" placeholder="Ej: Entre calles Morelos y Juárez, portón verde…" maxlength="500" style="resize:vertical; min-height:64px;"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-envio__footer">
+          <button type="button" class="btn-cancel" onclick="cerrarModalEnvio()">Cancelar</button>
+          <button type="submit" class="btn-save modal-envio__submit" id="envio-submit-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            Continuar al Pago
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL PAGO ════════════════════════════════════ -->
+  <div id="modal-pago" role="dialog" aria-modal="true" aria-labelledby="pago-titulo">
+    <div class="modal-pago__backdrop" onclick="cerrarModalPago()"></div>
+    <div class="modal-pago__content">
+      <div class="modal-pago__header">
+        <div class="modal-pago__header-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div>
+          <h3 id="pago-titulo">Datos de Pago</h3>
+          <p class="modal-pago__subtitle" id="pago-subtitulo">—</p>
+        </div>
+        <button class="modal-pago__close" onclick="cerrarModalPago()" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="form-pago" class="modal-pago__form" novalidate autocomplete="off">
+        <div class="modal-pago__card-preview" id="pago-card-preview" aria-hidden="true">
+          <div class="card-preview__chip"></div>
+          <div class="card-preview__number" id="preview-numero">•••• •••• •••• ••••</div>
+          <div class="card-preview__row">
+            <div>
+              <div class="card-preview__label">Titular</div>
+              <div class="card-preview__value" id="preview-nombre">TU NOMBRE</div>
+            </div>
+            <div>
+              <div class="card-preview__label">Vence</div>
+              <div class="card-preview__value" id="preview-expiry">MM/YY</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-pago__fields">
+          <div class="input-group">
+            <label for="pago-nombre">Nombre del Titular</label>
+            <input type="text" id="pago-nombre" placeholder="Como aparece en la tarjeta" maxlength="26" autocomplete="cc-name">
+          </div>
+          <div class="input-group">
+            <label for="pago-numero">Número de Tarjeta</label>
+            <div class="card-input-wrap">
+              <input type="text" id="pago-numero" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number" inputmode="numeric">
+              <span class="card-input-wrap__icon" id="card-brand-icon" aria-hidden="true">
+                <svg width="28" height="18" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="48" height="32" rx="4" fill="#1a1a24"/>
+                  <circle cx="18" cy="16" r="10" fill="#eb5757" opacity="0.9"/>
+                  <circle cx="30" cy="16" r="10" fill="#f59e0b" opacity="0.85"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+          <div class="modal-pago__row">
+            <div class="input-group">
+              <label for="pago-expiry">Fecha de Vencimiento</label>
+              <input type="text" id="pago-expiry" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" inputmode="numeric">
+            </div>
+            <div class="input-group">
+              <label for="pago-cvv">CVV <span class="label-tag">Código</span></label>
+              <input type="text" id="pago-cvv" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-pago__footer">
+          <button type="button" class="btn-cancel" onclick="cerrarModalPago()">Cancelar</button>
+          <button type="submit" class="btn-save modal-pago__submit" id="pago-submit-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <span id="pago-submit-txt">Pagar —</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ CUSTOM CONFIRM DIALOG ════════════════════════ -->
+  <div id="modal-confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-msg">
+    <div class="modal-confirm__content">
+      <p id="confirm-msg" class="modal-confirm__msg"></p>
+      <div class="modal-confirm__btns">
+        <button class="btn-cancel" id="confirm-no">Cancelar</button>
+        <button class="btn-danger" id="confirm-yes">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST CONTAINER ══════════════════════════════ -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+
+  <!-- ═══ PANEL HISTORIAL DE COMPRAS ═══════════════════════ -->
+  <div id="historial-overlay" class="cart-overlay" onclick="toggleHistorial()"></div>
+  <aside id="historial-panel" class="cart-panel" aria-label="Historial de compras">
+    <div class="cart-panel__header">
+      <h2 class="cart-panel__title">Mis Compras</h2>
+      <button class="cart-panel__close" onclick="toggleHistorial()" aria-label="Cerrar historial">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="historial-contenido" class="cart-items" style="flex:1;overflow-y:auto;">
+      <p style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:0.875rem;">Cargando historial…</p>
+    </div>
+    <div id="historial-paginacion" style="display:flex;justify-content:center;align-items:center;gap:10px;padding:12px 20px;border-top:1px solid var(--border-subtle);"></div>
+  </aside>
+
+</body>
+</html>

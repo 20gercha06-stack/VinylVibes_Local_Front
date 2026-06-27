@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar / Registro — VinylVibes</title>
+<link rel="icon" type="image/png" href="record.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Page-specific overrides */
+    body { padding: 0; }
+
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── Left decorative panel ── */
+    .login-panel--left {
+      flex: 1;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 860px) { .login-panel--left { display: flex; } }
+
+    .login-panel--left::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 60%);
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .login-panel--left::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 180px;
+      background: linear-gradient(to top, var(--bg-surface), transparent);
+      pointer-events: none;
+    }
+
+    .deco-vinyl-wrap {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 48px;
+    }
+
+    .deco-vinyl {
+      width: 260px;
+      height: 260px;
+      animation: vinyl-rotate 18s linear infinite;
+      filter: drop-shadow(0 16px 48px rgba(245,158,11,0.22));
+    }
+
+    .deco-quote {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 340px;
+    }
+
+    .deco-quote__mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      line-height: 0.6;
+      color: var(--amber);
+      opacity: 0.4;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .deco-quote h2 {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .deco-quote p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── Right form panel ── */
+    .login-panel--right {
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 48px;
+      position: relative;
+    }
+
+    @media (max-width: 860px) {
+      .login-panel--right {
+        max-width: 100%;
+        padding: 40px 24px;
+      }
+    }
+
+    /* Logo at top */
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 44px;
+    }
+
+    .login-logo svg { width: 32px; height: 32px; flex-shrink: 0; }
+
+    .login-logo span {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.25rem;
+      background: var(--grad-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Tab switcher */
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-raised);
+      border-radius: var(--r-md);
+      padding: 4px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: calc(var(--r-md) - 4px);
+      transition: all 0.18s ease;
+      border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .auth-tab-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+
+    /* Views */
+    #vista-login, #vista-registro { animation: fadeIn 0.22s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    .view-heading {
+      margin-bottom: 28px;
+    }
+
+    .view-heading h2 {
+      font-size: 1.75rem;
+      background: var(--grad-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+
+    .view-heading p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .login-form-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .login-form-fields button[type="submit"] {
+      width: 100%;
+      justify-content: center;
+      margin-top: 4px;
+      padding: 13px;
+      font-size: 0.9rem;
+    }
+
+    /* Bottom link */
+    .auth-switch {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .auth-switch a {
+      color: var(--amber);
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .auth-switch a:hover { opacity: 0.8; }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 32px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.03em;
+    }
+
+    .back-link:hover { color: var(--text-secondary); }
+
+    /* Message output */
+    #mensaje-error-login {
+      font-size: 0.85rem;
+      text-align: center;
+      min-height: 16px;
+      transition: all 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-page">
+
+  <!-- ══ Left decorative panel ══════════════════════════ -->
+  <aside class="login-panel--left" aria-hidden="true">
+
+    <div class="deco-vinyl-wrap">
+      <svg class="deco-vinyl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="dg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#b45309"/>
+          </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="99" fill="#141418" stroke="#2a2a35" stroke-width="1"/>
+        <circle cx="100" cy="100" r="92" fill="none" stroke="#1d1d26" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="84" fill="none" stroke="#1a1a23" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="76" fill="none" stroke="#1c1c25" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="68" fill="none" stroke="#1d1d26" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="60" fill="none" stroke="#1b1b24" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="52" fill="none" stroke="#1d1d27" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="40" fill="#18182250" stroke="#2a2a3a" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="24" fill="url(#dg)"/>
+        <circle cx="100" cy="100" r="9" fill="#09090b"/>
+      </svg>
+    </div>
+
+    <div class="deco-quote">
+      <span class="deco-quote__mark">"</span>
+      <h2>La música es el arte de pensar con sonidos.</h2>
+      <p>— Jules Combarieu</p>
+    </div>
+
+  </aside>
+
+  <!-- ══ Right form panel ═══════════════════════════════ -->
+  <main class="login-panel--right">
+
+    <!-- Logo -->
+    <a href="index.html" class="login-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" stroke="url(#lg1)" stroke-width="1.5"/>
+        <circle cx="20" cy="20" r="12" stroke="url(#lg1)" stroke-width="1" stroke-dasharray="3 2"/>
+        <circle cx="20" cy="20" r="4" fill="url(#lg1)"/>
+        <circle cx="20" cy="20" r="2" fill="#09090b"/>
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40">
+            <stop offset="0%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#ff6b6b"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>VinylVibes</span>
+    </a>
+
+    <!-- Tab switcher -->
+    <div class="auth-tabs" role="tablist">
+      <button
+        class="auth-tab-btn active"
+        id="tab-login"
+        role="tab"
+        aria-selected="true"
+        aria-controls="vista-login"
+        onclick="cambiarVista('login')"
+      >Iniciar Sesión</button>
+      <button
+        class="auth-tab-btn"
+        id="tab-registro"
+        role="tab"
+        aria-selected="false"
+        aria-controls="vista-registro"
+        onclick="cambiarVista('registro')"
+      >Crear Cuenta</button>
+    </div>
+
+    <!-- ── Login view ── -->
+    <div id="vista-login" role="tabpanel" aria-labelledby="tab-login">
+      <div class="view-heading">
+        <h2>Bienvenido de vuelta</h2>
+        <p>Accede a tu colección y carrito de vinilos.</p>
+      </div>
+
+      <form id="login-form" class="login-form-fields" novalidate>
+        <div class="input-group">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" placeholder="Tu nombre de usuario" autocomplete="username" required>
+        </div>
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <p id="mensaje-error-login" style="color:#fca5a5; display:none;"></p>
+        <button type="submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Entrar
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        ¿No tienes cuenta?
+        <a href="#" onclick="cambiarVista('registro'); return false;">Regístrate aquí</a>
+      </p>
+    </div>
+
+    <!-- ── Register view ── -->
+    <div id="vista-registro" style="display: none;" role="tabpanel" aria-labelledby="tab-registro">
+      <div class="view-heading">
+        <h2>Únete a nosotros</h2>
+        <p>Crea tu cuenta y empieza a coleccionar.</p>
+      </div>
+
+      <form id="registro-form" class="login-form-fields" novalidate>
+        <div class="input-group">
+          <label for="new-username">Nombre de Usuario</label>
+          <input type="text" id="new-username" placeholder="Ej. rockero99" autocomplete="username" required>
+        </div>
+        <div class="input-group">
+          <label for="new-email">Correo Electrónico</label>
+          <input type="email" id="new-email" placeholder="correo@ejemplo.com" autocomplete="email" required>
+        </div>
+        <div class="input-group">
+          <label for="new-password">Contraseña</label>
+          <input type="password" id="new-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required>
+        </div>
+        <p id="mensaje-registro" style="display:none;"></p>
+        <button type="submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Crear Cuenta
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        ¿Ya tienes cuenta?
+        <a href="#" onclick="cambiarVista('login'); return false;">Inicia sesión</a>
+      </p>
+    </div>
+
+    <!-- Back link -->
+    <a href="index.html" class="back-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver a la tienda
+    </a>
+
+  </main>
+
+</div>
+
+<script>
+  // Switches between login/registro views
+  // Mantiene compatibilidad con login.js que usa cambiarVista() sin args
+  function cambiarVista(target) {
+    const loginView  = document.getElementById('vista-login');
+    const regView    = document.getElementById('vista-registro');
+    const tabLogin   = document.getElementById('tab-login');
+    const tabReg     = document.getElementById('tab-registro');
+
+    // If called without arg (legacy), toggle
+    if (!target) {
+      target = loginView.style.display === 'none' ? 'login' : 'registro';
+    }
+
+    if (target === 'login') {
+      loginView.style.display  = 'block';
+      regView.style.display    = 'none';
+      tabLogin.classList.add('active');
+      tabLogin.setAttribute('aria-selected', 'true');
+      tabReg.classList.remove('active');
+      tabReg.setAttribute('aria-selected', 'false');
+    } else {
+      loginView.style.display  = 'none';
+      regView.style.display    = 'block';
+      tabReg.classList.add('active');
+      tabReg.setAttribute('aria-selected', 'true');
+      tabLogin.classList.remove('active');
+      tabLogin.setAttribute('aria-selected', 'false');
+    }
+  }
+
+  // Show/hide the mensaje elements properly when JS sets their text
+  const msgLogin = document.getElementById('mensaje-error-login');
+  const msgReg   = document.getElementById('mensaje-registro');
+
+  const observeMensaje = (el) => {
+    const observer = new MutationObserver(() => {
+      el.style.display = el.innerText.trim() ? 'block' : 'none';
+    });
+    observer.observe(el, { childList: true, subtree: true, characterData: true });
+  };
+
+  if (msgLogin) observeMensaje(msgLogin);
+  if (msgReg)   observeMensaje(msgReg);
+</script>
+<script src="login.js"></script>
+</body>
+</html>

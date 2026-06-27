@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin — VinylVibes</title>
+  <link rel="icon" type="image/png" href="record.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { padding: 0; }
+
+    .admin-layout { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .admin-header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 32px;
+    }
+
+    .admin-header .header-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      gap: 16px;
+    }
+
+    .admin-header h1 {
+      font-size: 1.15rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      background: var(--grad-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 40px 24px;
+    }
+
+    /* Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0;
+    }
+
+    .admin-tab {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.18s;
+    }
+
+    .admin-tab.active {
+      color: var(--amber);
+      border-bottom-color: var(--amber);
+    }
+
+    .admin-tab-content { display: none; }
+    .admin-tab-content.active { display: block; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 20px 24px;
+    }
+
+    .stat-card__label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .stat-card__value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--amber);
+    }
+
+    /* Table */
+    .admin-table-wrap {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+
+    .admin-table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .admin-table-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--bg-raised);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border-dim);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg-raised); }
+
+    tbody td {
+      padding: 12px 16px;
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .badge--admin    { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+    .badge--cliente  { background: rgba(100,116,139,0.15); color: #94a3b8; border: 1px solid rgba(100,116,139,0.3); }
+    .badge--vendedor { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+    .badge--pagada   { background: rgba(110,231,183,0.15); color: #6ee7b7; border: 1px solid rgba(110,231,183,0.3); }
+    .badge--pendiente{ background: rgba(252,211,77,0.15); color: #fcd34d; border: 1px solid rgba(252,211,77,0.3); }
+    .badge--enviada  { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+    .badge--cancelada{ background: rgba(252,165,165,0.15); color: #fca5a5; border: 1px solid rgba(252,165,165,0.3); }
+    .badge--entregada{ background: rgba(110,231,183,0.15); color: #6ee7b7; border: 1px solid rgba(110,231,183,0.3); }
+
+    .btn-table {
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-dim);
+      background: var(--bg-hover);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s;
+      margin-right: 4px;
+    }
+
+    .btn-table:hover { color: var(--text-primary); border-color: var(--border-subtle); }
+    .btn-table--danger { color: #fca5a5; border-color: rgba(252,165,165,0.3); }
+    .btn-table--danger:hover { background: rgba(252,165,165,0.1); }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--r-sm);
+      padding: 6px 12px;
+    }
+
+    .search-bar input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      width: 220px;
+    }
+
+    #tabla-loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Modal detalle venta */
+    .venta-detalle-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .venta-detalle-modal.open { display: flex; }
+
+    .venta-detalle-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    .venta-detalle-content {
+      position: relative;
+      z-index: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-xl);
+      padding: 32px;
+      width: 90%;
+      max-width: 560px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .venta-detalle-content h3 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .venta-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-dim);
+      font-size: 0.875rem;
+    }
+
+    .venta-item:last-child { border-bottom: none; }
+
+    .select-rol {
+      background: var(--bg-raised);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      color: var(--text-primary);
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 700px) {
+      .admin-main { padding: 24px 16px; }
+      table { font-size: 0.78rem; }
+      thead th, tbody td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <header class="admin-header">
+    <div class="header-content">
+      <h1>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Panel de Administración
+      </h1>
+      <a href="index.html" class="btn-ghost btn-sm">← Volver al Catálogo</a>
+    </div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-card__label">Usuarios totales</span>
+        <span class="stat-card__value" id="stat-usuarios">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Ventas totales</span>
+        <span class="stat-card__value" id="stat-ventas">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Ingresos totales</span>
+        <span class="stat-card__value" id="stat-ingresos">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Ventas pendientes</span>
+        <span class="stat-card__value" id="stat-pendientes">—</span>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="cambiarTab('usuarios', this)">👤 Usuarios</button>
+      <button class="admin-tab" onclick="cambiarTab('ventas', this)">🛒 Ventas</button>
+    </div>
+
+    <!-- Tab: Usuarios -->
+    <div id="tab-usuarios" class="admin-tab-content active">
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <h2>Gestión de Usuarios</h2>
+          <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="search" id="buscar-usuario" placeholder="Buscar usuario…" oninput="filtrarUsuarios(this.value)">
+          </div>
+        </div>
+        <div id="tabla-loading">Cargando usuarios…</div>
+        <table id="tabla-usuarios" style="display:none;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Correo</th>
+              <th>Rol</th>
+              <th>Registrado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-usuarios"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Ventas -->
+    <div id="tab-ventas" class="admin-tab-content">
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <h2>Gestión de Ventas</h2>
+          <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="search" id="buscar-venta" placeholder="Buscar por usuario o ID…" oninput="filtrarVentas(this.value)">
+          </div>
+        </div>
+        <div id="tabla-ventas-loading">Cargando ventas…</div>
+        <table id="tabla-ventas" style="display:none;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-ventas"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Modal detalle de venta -->
+<div class="venta-detalle-modal" id="modal-venta">
+  <div class="venta-detalle-backdrop" onclick="cerrarModalVenta()"></div>
+  <div class="venta-detalle-content">
+    <h3>
+      Detalle de Venta
+      <button onclick="cerrarModalVenta()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </h3>
+    <div id="venta-detalle-body"></div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>
