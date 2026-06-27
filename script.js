@@ -3,7 +3,7 @@
 //  Catálogo dinámico desde Discogs + Redis
 // ══════════════════════════════════════════════════
 
-const API = 'https://vinylvibes-local-back.onrender.com/';
+const API = 'https://vinylvibes-local-back.onrender.com';
 
 // ── GLOBALS ───────────────────────────────────────
 const contenedor  = document.getElementById('contenedor-discos');
